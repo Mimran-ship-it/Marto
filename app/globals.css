@@ -1,26 +1,154 @@
 @import "tailwindcss";
 
 :root {
+  --marto-forest: #0b5d2a;
+  --marto-forest-deep: #042f1a;
+  --marto-forest-mid: #14532d;
+  --marto-action: #49a82d;
+  --marto-action-bright: #22c55e;
+  --marto-lime: #a3e635;
+  --marto-mint: #e8f5e9;
+  --marto-surface: #f5f7f5;
+  --marto-text: #1a1a1a;
+  --marto-muted: #6b7280;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-forest: var(--marto-forest);
+  --color-forest-deep: var(--marto-forest-deep);
+  --color-forest-mid: var(--marto-forest-mid);
+  --color-action: var(--marto-action);
+  --color-action-bright: var(--marto-action-bright);
+  --color-lime: var(--marto-lime);
+  --color-mint: var(--marto-mint);
+  --color-surface: var(--marto-surface);
+  --color-muted: var(--marto-muted);
+  --font-sans: var(--font-poppins);
+  --font-script: var(--font-caveat);
+  --shadow-card: 0 2px 4px rgba(11, 93, 42, 0.04), 0 8px 24px rgba(11, 93, 42, 0.08);
+  --shadow-card-hover: 0 4px 8px rgba(11, 93, 42, 0.06), 0 16px 40px rgba(11, 93, 42, 0.14);
+  --shadow-float: 0 12px 40px rgba(4, 47, 26, 0.18);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+@layer utilities {
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+  .text-gradient-green {
+    background: linear-gradient(135deg, #0b5d2a 0%, #49a82d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-3d {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 50%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.25) inset,
+      0 4px 12px rgba(11, 93, 42, 0.28);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      filter 0.2s ease;
+  }
+  .btn-3d:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 8px 20px rgba(11, 93, 42, 0.35);
+    filter: brightness(1.05);
+  }
+  .btn-3d:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  .card-lift {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 5s ease-in-out 0.8s infinite;
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.7s ease-out both;
+  }
+  .animate-badge-bounce {
+    animation: badgeBounce 0.45s ease;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes badgeBounce {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-delayed,
+  .animate-fade-up,
+  .animate-badge-bounce,
+  .card-lift,
+  .btn-3d {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card-lift:hover {
+    transform: none;
+  }
+}
+
+/* Focus rings for a11y */
+:focus-visible {
+  outline: 2px solid var(--marto-action);
+  outline-offset: 2px;
 }
