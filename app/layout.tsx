@@ -8,13 +8,17 @@ import "./globals.css";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+  preload: true,
 });
 
 const caveat = Caveat({
   variable: "--font-caveat",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

@@ -100,14 +100,6 @@ export function Newsletter() {
 
         {/* Visual: bag crop only — not the full footer mockup */}
         <div className="relative mx-auto hidden w-full max-w-md lg:block">
-          <Leaf
-            className="animate-float absolute -left-2 top-6 h-8 w-8 text-lime opacity-80"
-            aria-hidden
-          />
-          <Leaf
-            className="animate-float-delayed absolute right-4 top-0 h-7 w-7 rotate-45 text-[#8BC34A] opacity-70"
-            aria-hidden
-          />
           <div className="relative w-full overflow-visible">
             <Image
               src="/images/newsletter-produce.jpg"
@@ -116,6 +108,8 @@ export function Newsletter() {
               height={328}
               className="h-auto w-full object-contain"
               sizes="420px"
+              quality={65}
+              loading="lazy"
             />
           </div>
         </div>

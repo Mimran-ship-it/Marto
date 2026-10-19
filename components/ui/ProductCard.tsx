@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 import { Clock, Heart, ShoppingCart } from "lucide-react";
 import { CATEGORIES } from "@/lib/data/categories";
 import type { Product } from "@/lib/data/products";
@@ -14,9 +15,14 @@ import { StarRating } from "./StarRating";
 type ProductCardProps = {
   product: Product;
   view?: "grid" | "list";
+  priority?: boolean;
 };
 
-export function ProductCard({ product, view = "grid" }: ProductCardProps) {
+function ProductCardInner({
+  product,
+  view = "grid",
+  priority = false,
+}: ProductCardProps) {
   const { addToCart, updateQuantity, getCartQty, toggleWishlist, isWishlisted } =
     useStore();
   const qty = getCartQty(product.id);
@@ -45,6 +51,8 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
             fill
             className="object-cover"
             sizes="144px"
+            quality={70}
+            loading={priority ? "eager" : "lazy"}
           />
         </Link>
         <div className="min-w-0 flex-1">
@@ -116,7 +124,10 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
             alt={product.name}
             fill
             className="object-cover"
-            sizes="(max-width:768px) 50vw, 25vw"
+            sizes="(max-width:768px) 45vw, 22vw"
+            quality={70}
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
           />
         </Link>
       </div>
@@ -209,3 +220,5 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
     </article>
   );
 }
+
+export const ProductCard = memo(ProductCardInner);

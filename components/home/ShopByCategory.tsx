@@ -14,7 +14,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
 
 export function ShopByCategory() {
   return (
-    <section className="bg-white px-4 py-8 lg:mx-auto lg:max-w-7xl lg:py-12">
+    <section className="section-defer bg-white px-4 py-8 lg:mx-auto lg:max-w-7xl lg:py-12">
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
           <h2 className="flex items-center gap-2 text-lg font-extrabold text-[#1B5E20] sm:text-xl">
@@ -39,7 +39,7 @@ export function ShopByCategory() {
           <li key={c.slug} className="w-[42%] shrink-0 sm:w-auto">
             <Link
               href={c.href}
-              className="card-lift flex h-full flex-col overflow-hidden rounded-2xl bg-[#F5F7F5] shadow-sm transition hover:shadow-md"
+              className="flex h-full flex-col overflow-hidden rounded-2xl bg-[#F5F7F5] shadow-sm"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
                 <Image
@@ -48,6 +48,8 @@ export function ShopByCategory() {
                   fill
                   className="object-cover"
                   sizes="160px"
+                  quality={65}
+                  loading="lazy"
                 />
               </div>
               <span className="flex items-center justify-between gap-1 px-3 py-2.5 text-sm font-semibold text-[#1B5E20]">

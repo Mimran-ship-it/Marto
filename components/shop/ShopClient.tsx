@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Filter, LayoutGrid, List, Leaf, Shield, Sprout } from "lucide-react";
 import { PRICE_FILTERS } from "@/lib/data/categories";
@@ -38,6 +38,11 @@ export function ShopClient({
   const [sort, setSort] = useState<SortKey>("popular");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [filters, sort, searchQuery, categorySlug]);
 
   const filtered = useMemo(() => {
     let list = [...products];
@@ -95,6 +100,11 @@ export function ShopClient({
 
     return list;
   }, [products, filters, sort, searchQuery]);
+
+  const visible = useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount],
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
@@ -204,23 +214,46 @@ export function ShopClient({
               <button
                 type="button"
                 className="mt-4 text-sm font-semibold text-forest underline"
-                onClick={() => setFilters(initialFilters)}
+                onClick={() => {
+                  setFilters(initialFilters);
+                  setVisibleCount(12);
+                }}
               >
                 Clear filters
               </button>
             </div>
-          ) : view === "grid" ? (
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
-              {filtered.map((p) => (
-                <ProductCard key={p.id} product={p} view="grid" />
-              ))}
-            </div>
           ) : (
-            <div className="flex flex-col gap-3">
-              {filtered.map((p) => (
-                <ProductCard key={p.id} product={p} view="list" />
-              ))}
-            </div>
+            <>
+              {view === "grid" ? (
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
+                  {visible.map((p, i) => (
+                    <ProductCard
+                      key={p.id}
+                      product={p}
+                      view="grid"
+                      priority={i < 2}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {visible.map((p) => (
+                    <ProductCard key={p.id} product={p} view="list" />
+                  ))}
+                </div>
+              )}
+              {visibleCount < filtered.length && (
+                <div className="mt-6 flex justify-center">
+                  <button
+                    type="button"
+                    className="rounded-full border border-forest/20 bg-white px-5 py-2.5 text-sm font-semibold text-forest"
+                    onClick={() => setVisibleCount((n) => n + 12)}
+                  >
+                    Load more ({filtered.length - visibleCount} left)
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
